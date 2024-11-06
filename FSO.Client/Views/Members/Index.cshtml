@@ -1,0 +1,29 @@
+@model IEnumerable<FSO.Client.Models.MemberViewModel>
+
+<h2>Members</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var member in Model)
+        {
+            <tr>
+                <td>@member.Id</td>
+                <td>@member.Name</td>
+                
+                <td>
+                    <a asp-action="Edit" asp-route-id="@member.Id" class="btn btn-primary">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@member.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-success">Create New</a>
