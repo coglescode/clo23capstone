@@ -13,7 +13,7 @@ namespace FSO.API.Controllers;
  */
 
 [ApiController] // used to mark this class as a controller that uses the API behavior conventions
-[Route("api/[controller]")] // all actions in this controller will start with "/api/products"
+[Route("api/members")] // all actions in this controller will start with "/api/products"
 public class MembersController : ControllerBase
 {
     // This is a simple in-memory data store.
@@ -32,7 +32,7 @@ public class MembersController : ControllerBase
     {
         return members;
     }
-
+     
     // Expected URL: GET /api/products/{id}
     [HttpGet("{id}")]
     public Member? Get(int id)

@@ -5,7 +5,7 @@ namespace FSO.Client.Models;
 
 public class ClientDbContext : DbContext
 {
-  
+  private readonly IConfiguration? _configuration;
   private readonly string? _connectionString;
   
   public DbSet<MemberViewModel> Members { get; set; } = null!;
@@ -20,8 +20,8 @@ public class ClientDbContext : DbContext
   {
     //_connectionString = configuration.GetConnectionString("ConnectionStrings:DefaultConnection");
 
-    //_configuration = configuration;
-    _connectionString = configuration.GetValue<string>("ConnectionStrings:DefaultConnection");
+    _configuration = configuration;
+    _connectionString = _configuration.GetValue<string>("ConnectionStrings:DefaultConnection");
     
 
   }

@@ -12,11 +12,11 @@ public class MembersController : Controller
     {
         _membersApiService = membersApiService;
     }
-    
+
+    // Get all members from the API service
     public async Task<IActionResult> Index()
     {
-        // Get all products from the API service
-        var membersFromApiService = await _membersApiService.GetMembersAsync();
+         var membersFromApiService = await _membersApiService.GetMembersAsync();
 
         // Map the API DTO to the api model
         var members = membersFromApiService.Select(p => new MemberViewModel
@@ -29,7 +29,7 @@ public class MembersController : Controller
         //var products = GetProducts();
 
         return View(members);
-    }
+    } 
 
 
     // Mocked API data. Private method to simulate API call

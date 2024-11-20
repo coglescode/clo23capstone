@@ -5,16 +5,23 @@ namespace FSO.Client.Services;
 public class MembersApiService
 {
     private readonly HttpClient _httpClient;
-    private readonly string _baseUrl = "http://localhost:5046/api/members";
 
-    public MembersApiService(HttpClient httpClient)
+    private readonly string? _apiEndpoint;  
+    
+    
+    public MembersApiService(HttpClient httpClient, IConfiguration configuration)
     {
+        
         _httpClient = httpClient;
+        
+        _apiEndpoint = configuration.GetValue<string>("ApiEndpointUrl");     
+                
     }
 
-    public async Task<List<MemberApiDTO>> GetMembersAsync()
+
+    public async Task<List<MemberApiDTO>?> GetMembersAsync()
     {
-        var response = await _httpClient.GetAsync(_baseUrl);
+        var response = await _httpClient.GetAsync(_apiEndpoint);
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<List<MemberApiDTO>>(content);
