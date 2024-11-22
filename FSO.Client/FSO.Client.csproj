@@ -6,12 +6,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <IsPublishable>true</IsPublishable>
     <EnableSdkContainerSupport>true</EnableSdkContainerSupport>
-    <ContainerImageTag>latest</ContainerImageTag>
-    <ContainerRepository>coglescode/fso-client</ContainerRepository>
-    <ContainerFamily>jammy-chiseled</ContainerFamily>
-   
 
-    <UserSecretsId>6d6e0583-c8d5-40f3-af56-7507cbfe8ae1</UserSecretsId>
+    <!-- ContainerRegistry>docker.io/coglescode/fso-client:latest</ContainerRegistry -->    
+    <ContainerRepository>coglescode/fso-client</ContainerRepository>
+    <ContainerImageTag>latest</ContainerImageTag>
+    <ContainerFamily>alpine</ContainerFamily>    
+
+    
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,10 +23,14 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
 
     <ContainerPort Include="8080" Type="tcp" />
 
-    <ContainerEnvironmentVariable Include="ApiEndpointUrl" Value="$(ApiEndpointUrl)" />
+    <!--ContainerEnvironmentVariable Include="ApiEndpointUrl" Value="$(ApiEndpointUrl)" /-->
     
   </ItemGroup>
 

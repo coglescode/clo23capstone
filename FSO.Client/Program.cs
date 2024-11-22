@@ -10,9 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<MembersApiService>();
-builder.Services.AddDbContext<ClientDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionStrings:DefaultConnection")));
-builder.Configuration.AddEnvironmentVariables(prefix: "ApiEndpointUrl");
+//builder.Services.AddDbContext<ClientDbContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionStrings:DefaultConnection")));
+builder.Configuration.AddEnvironmentVariables(prefix: "ApiEndpointUrl_");
 
 
 // builder.WebHost.ConfigureKestrel((context, serverOptions) =>
@@ -27,10 +27,6 @@ builder.Configuration.AddEnvironmentVariables(prefix: "ApiEndpointUrl");
 
 // });
 
-foreach (var c in builder.Configuration.AsEnumerable())
-{
-    Console.WriteLine(c.Key + " = " + c.Value);
-}
 
 var app = builder.Build();
 

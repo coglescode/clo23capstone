@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,35 +7,27 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FSO.API.Models;
 
-namespace FSO.API.Controllers
+namespace FSO.API.Services
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MembersController : ControllerBase
+    public class MembersService : ControllerBase
     {
         private readonly ClientDbContext _context;
 
-        
-        public MembersController(ClientDbContext context)
+        public MembersService(ClientDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Members
+        // GET: api/MembersService
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Member>>> GetMembers()
         {
-            var members = await _context.Members.ToListAsync();
-
-            if (members == null || members.Count == 0)
-            {
-                return NotFound("No members found.");
-            }
-
-            return members;
+            return await _context.Members.ToListAsync();
         }
 
-        // GET: api/Members/5
+        // GET: api/MembersService/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Member>> GetMember(int id)
         {
@@ -49,7 +41,7 @@ namespace FSO.API.Controllers
             return member;
         }
 
-        // PUT: api/Members/5
+        // PUT: api/MembersService/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMember(int id, Member member)
@@ -80,7 +72,7 @@ namespace FSO.API.Controllers
             return NoContent();
         }
 
-        // POST: api/Members
+        // POST: api/MembersService
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Member>> PostMember(Member member)
@@ -105,7 +97,7 @@ namespace FSO.API.Controllers
             return CreatedAtAction("GetMember", new { id = member.Id }, member);
         }
 
-        // DELETE: api/Members/5
+        // DELETE: api/MembersService/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMember(int id)
         {
