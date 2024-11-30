@@ -6,11 +6,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <IsPublishable>true</IsPublishable>
     <EnableSdkContainerSupport>true</EnableSdkContainerSupport>
+    <InvariantGlobalization>false</InvariantGlobalization>
 
     <!-- ContainerRegistry>docker.io/coglescode/fso-client:latest</ContainerRegistry -->    
     <ContainerRepository>coglescode/fso-client</ContainerRepository>
     <ContainerImageTag>latest</ContainerImageTag>
-    <ContainerFamily>alpine</ContainerFamily>    
+    <ContainerFamily>alpine</ContainerFamily>
+    <OutputType>WinExe</OutputType>
+    <UserSecretsId>90527975-0068-418a-ad85-ab760d769fcd</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>    
 
     
   </PropertyGroup>
@@ -27,6 +31,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
 
     <ContainerPort Include="8080" Type="tcp" />
 

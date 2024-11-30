@@ -10,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<MembersApiService>();
+//builder.Services.AddHttpClient<EventsApiService>();
+
 //builder.Services.AddDbContext<ClientDbContext>(options =>
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionStrings:DefaultConnection")));
 builder.Configuration.AddEnvironmentVariables(prefix: "ApiEndpointUrl_");
