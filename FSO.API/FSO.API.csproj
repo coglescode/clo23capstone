@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
-    
+     
     <ContainerImageTag>latest</ContainerImageTag>
     <ContainerRepository>coglescode/fso-api</ContainerRepository>
     <ContainerFamily>alpine</ContainerFamily>
@@ -13,7 +13,7 @@
     <UserSecretsId>ba2fa87a-3faf-47dd-9b92-4ab909c6d4b1</UserSecretsId>
     
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <!-- InvariantGlobalization>false</InvariantGlobalization -->
+    <InvariantGlobalization>false</InvariantGlobalization>
     
     
   </PropertyGroup>
@@ -31,11 +31,15 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.1.0" />
 
     <ContainerPort Include="8080" Type="tcp" />
     
     <!--ContainerEnvironmentVariable Include="ConnectionString" Value="$(ConnectionString)" /-->
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\" />
   </ItemGroup>
 
  

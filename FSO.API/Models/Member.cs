@@ -1,12 +1,11 @@
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FSO.API.Models;
 
+//[Table("members", Schema = "fso")]
+public class Member{
 
-public class Member
-{
-
-    public int Id { get; set; }
-    public string? Name { get; set; }
+    public Guid Id { get; set; }
+    public required string Name { get; set; }
     
 }

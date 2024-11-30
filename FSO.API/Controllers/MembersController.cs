@@ -7,52 +7,67 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FSO.API.Models;
 
+
 namespace FSO.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class MembersController : ControllerBase
     {
-        private readonly ClientDbContext _context;
+        private readonly ClientDbContext? _context;
 
         
         public MembersController(ClientDbContext context)
         {
-            _context = context;
+            _context = context; 
         }
 
         // GET: api/Members
+        
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Member>>> GetMembers()
+        public async Task<List<Member>> GetMembers()
+        //public async Task<ActionResult<List<Member>>> GetMembers()
+        
         {
             var members = await _context.Members.ToListAsync();
-
-            if (members == null || members.Count == 0)
-            {
-                return NotFound("No members found.");
-            }
-
-            return members;
+                       
+            return members.Count == 0 ? new List<Member>() : members;
         }
+
+
+
 
         // GET: api/Members/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Member>> GetMember(int id)
+        [HttpGet]
+        [Route("{id:guid}")]
+        public IActionResult GetMembers(MembersDTO membersDTO)
         {
-            var member = await _context.Members.FindAsync(id);
-
-            if (member == null)
+            var member = new Member
             {
-                return NotFound();
-            }
+               Name = membersDTO.Name
+            };
 
-            return member;
+            _context.Members.Add(member);
+            _context.SaveChanges();
+
+            return Ok(member);
         }
+        //public async Task<ActionResult<Member>> GetMember(int id)
+        //{
+        //    var member = await _context.Members.FindAsync(id);
+        //    if (member == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return member;
+        //}
 
         // PUT: api/Members/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutMember(int id, Member member)
+        [HttpPut]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> PutMember(Guid id, Member member)
         {
             if (id != member.Id)
             {
@@ -106,8 +121,9 @@ namespace FSO.API.Controllers
         }
 
         // DELETE: api/Members/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMember(int id)
+        [HttpDelete]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> DeleteMember(Guid id)
         {
             var member = await _context.Members.FindAsync(id);
             if (member == null)
@@ -119,11 +135,37 @@ namespace FSO.API.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+            //return RedirectToAction("GetMembers");
         }
 
-        private bool MemberExists(int id)
+        private bool MemberExists(Guid id)
         {
             return _context.Members.Any(e => e.Id == id);
         }
     }
+
+    // The section below should not deleted for your own good
+  
+    // Original constructor to use
+    //
+    //public async Task<ActionResult<IEnumerable<Member>>> GetMembers()
+    //{
+    //    var members = await _context.Members.ToListAsync();
+    //    if (members == null || members.Count == 0)
+    //    {
+    //        return NotFound("La lista está vacía.");
+    //    }
+    //    return members;
+    //}
+
+
+    // Contructor that works showing an empty list. You get this from DanStj on Discord
+    //
+    //[HttpGet]
+    //public async Task<List<Member>> GetMembers()
+    //{
+    //    var members = await _context.Members.ToListAsync();
+    //    return members.Count == 0 ? new List<Member>() : members;
+    //}
+
 }
