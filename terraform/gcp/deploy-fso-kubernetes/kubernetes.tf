@@ -69,13 +69,14 @@ resource "kubernetes_deployment" "fso-api" {
       }
       spec {
         container {
-          image = "coglescode/fso-api"
-          name  = "fso-api"
+          image = "coglescode/fsoapi"
+          name  = "fsoapi"
 
           port {
             container_port = 8080
           }  
 
+          
              
         }
       }
@@ -125,15 +126,15 @@ resource "kubernetes_deployment" "fso_client" {
       }
       spec {
         container {
-          image = "coglescode/fso-client"
-          name  = "fso-client"
+          image = "coglescode/fsoclient"
+          name  = "fsoclient"
 
           port {
             container_port = 8080
           }   
 
           env {
-            name  = "ApiEndpointUrl"
+            name  = "MembersEndpointUrl"
             value = "http://${kubernetes_service.api_service.status.0.load_balancer.0.ingress.0.ip}:5046/api/members"
           }
               
