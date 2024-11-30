@@ -13,17 +13,34 @@
     <tbody>
         @foreach (var member in Model)
         {
-            <tr>
-                <td>@member.Id</td>
-                <td>@member.Name</td>
-                
-                <td>
-                    <a asp-action="Put" asp-controller="Members" asp-route-id="@member.Id" class="btn btn-primary">Edit</a>
-                    <a asp-action="Delete" asp-controller="Members" asp-route-id="@member.Id" class="btn btn-danger">Delete</a>
-                </td>
-            </tr>
+            @if (member == null)
+            {
+                <tr>
+                    <td colspan="3">No Members Found</td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                 @*    <td>@member.Id</td> *@
+                    <td>@member.Name</td>
+
+                    <td>
+                        <a asp-action="PutMember" asp-controller="Members" asp-route-id="@member.Id" class="btn btn-primary">Edit</a>
+                        <a asp-action="DeleteMember" asp-controller="Members" asp-route-id="@member.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>               
+            }            
         }
-    </tbody>
+       
+        
+    </tbody> 
 </table>
 
-<a asp-action="Create" class="btn btn-success">Create New</a>
+
+<form asp-controller="Members" asp-action="PostMember" method="post">
+    <!-- Input and Submit elements -->
+    @* <input type="text" name="Id" class="form" /> *@
+    <input type="text" name="Name" class="form" />
+    <button class="btn btn-success" type="submit">Create New</button>
+</form>
