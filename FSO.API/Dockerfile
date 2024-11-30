@@ -22,7 +22,7 @@ RUN dotnet build "./FSO.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./FSO.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
-
+#
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 #FROM base AS final
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS final
@@ -31,6 +31,8 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS final
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
     LC_ALL=en_US.UTF-8 \
     LANG=en_US.UTF-8
+
+ENV CONNECTION_STRING="Data Source=188.149.84.86,1433;Persist Security Info=True;User ID=sa;Password=Noobsaibot.502;Database=fso_members;TrustServerCertificate=True"
 
 # Install ICU package for globalization support
 RUN apk add --no-cache icu-data-full icu-libs
