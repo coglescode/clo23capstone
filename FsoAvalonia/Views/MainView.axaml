@@ -2,18 +2,43 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="FsoAvalonia.MainView">
+             xmlns:vm="using:FsoAvalonia.ViewModels"
+             mc:Ignorable="d"
+             Width="300" Height="500" Padding="4"
+             x:Class="FsoAvalonia.MainView"
+             x:DataType="vm:MainWindowViewModel">
 
 
-  <StackPanel HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Margin="30"
-                Spacing="30">
+ 
+    <!--
     <TextBlock FontSize="25">
       Welcome to Avalonia! The best XAML framework ever ♥
     </TextBlock>
     <Slider />
-  </StackPanel>
+    -->
+    
+    <!-- We give a name to the root grid in order to access it later -->
+    <Grid RowDefinitions="Auto, *, Auto"
+          x:Name="Root">
+
+      <!-- This is our title text block.  -->
+      <TextBlock Text="My ToDo-List" />
+
+      <ScrollViewer Grid.Row="1">
+        <!-- This ItemsControl show all added ToDoItems. -->
+        <!-- It needs to be placed inside a ScrollViewer because other than a ListBox it has not its own -->
+        <ItemsControl ItemsSource="{Binding Members}">
+        </ItemsControl>
+      </ScrollViewer>
+
+      <!-- This TextBox can be used to add new ToDoItems -->
+      <TextBox Grid.Row="2"
+               Text="{Binding NewItemContent}"
+               Watermark="Add a new Item">
+      </TextBox>
+    </Grid>
+
+
+
   
 </UserControl>
