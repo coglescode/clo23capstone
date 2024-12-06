@@ -32,7 +32,6 @@ ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
     LC_ALL=en_US.UTF-8 \
     LANG=en_US.UTF-8
 
-ENV CONNECTION_STRING="Data Source=188.149.84.86,1433;Persist Security Info=True;User ID=sa;Password=Noobsaibot.502;Database=fso_members;TrustServerCertificate=True"
 
 # Install ICU package for globalization support
 RUN apk add --no-cache icu-data-full icu-libs
