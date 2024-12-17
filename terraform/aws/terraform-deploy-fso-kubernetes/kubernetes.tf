@@ -1,50 +1,63 @@
 terraform {
   required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "6.8.0"
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 4.48.0"
     }
+
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = ">= 2.0.1"
+      version = ">= 2.16.1"
     }
   }
 }
 
-data "terraform_remote_state" "gke" {
+data "terraform_remote_state" "eks" {
   backend = "local"
 
   config = {
-    path = "../gke_cluster/terraform.tfstate"
+    path = "../terraform-provision-eks-cluster/terraform.tfstate"
   }
 }
 
-# Retrieve GKE cluster information
-provider "google" {
-  project = data.terraform_remote_state.gke.outputs.project_id
-  region  = data.terraform_remote_state.gke.outputs.zone
+# Retrieve EKS cluster information
+provider "aws" {
+  region = data.terraform_remote_state.eks.outputs.region
 }
 
-# Configure kubernetes provider with Oauth2 access token.
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/client_config
-# This fetches a new token, which will expire in 1 hour.
-data "google_client_config" "default" {}
-
-data "google_container_cluster" "my_cluster" {
-  name     = data.terraform_remote_state.gke.outputs.kubernetes_cluster_name
-  location = data.terraform_remote_state.gke.outputs.zone
+data "aws_eks_cluster" "cluster" {
+  name = data.terraform_remote_state.eks.outputs.cluster_name
 }
+
+#data "aws_eks_node_group" "fso_nodes" {
+#  cluster_name        = data.aws_eks_cluster.cluster.name
+  #node_group_name    = "node-group-1-20241211203459946500000012"
+#  
+#}
 
 provider "kubernetes" {
-  #host = data.terraform_remote_state.gke.outputs.kubernetes_cluster_host
-  #token                  = data.google_client_config.default.access_token
-  cluster_ca_certificate = base64decode(data.google_container_cluster.my_cluster.master_auth[0].cluster_ca_certificate)
+  #host                   = data.aws_eks_cluster.cluster.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
   config_path     = "~/.kube/config"
-  config_context  = "HÄR SKA DU SKRIVA DIN kubectl context"
-#  cluster_ca_certificate = google_container_cluster.primary.master_auth.0.cluster_ca_certificate
+  config_context  = "arn:aws:eks:eu-north-1:905418105333:cluster/fso-eks-kZAxqvY6"
+
+
+  #exec {
+  #  api_version = "client.authentication.k8s.io/v1beta1"
+  #  command     = "aws"
+  #  args = [
+  #    "eks",
+  #    "get-token",
+  #    "--cluster-name",
+  #    data.aws_eks_cluster.cluster.name
+  #  ]
+  #}
 }
 
-# FSO_API container
+#data "aws_secretsmanager_secret_version" "secret-version" {
+#  secret_id = data.aws_secretsmanager_secret.CONNECTION_STRING.value
+#}
+
 
 resource "kubernetes_deployment" "fso-api" {
   metadata {
@@ -72,14 +85,14 @@ resource "kubernetes_deployment" "fso-api" {
           image = "coglescode/fsoapi"
           name  = "fsoapi"
 
+          env {
+            name  = "CONNECTION_STRING"
+            value = "FRÅGA MIG EFTER CONNECTIONSTRING"
+          }
+
           port {
             container_port = 8080
           }  
-
-          env {
-            name  = "CONNECTION_STRING"
-            value = "Data Source=188.149.80.66,1433;Initial Catalog=fso_members;Persist Security Info=True;User ID=sa;Password=Noobsaibot.502;Encrypt=True;Trust Server Certificate=True"
-          }
         }
       }
     }
@@ -102,6 +115,7 @@ resource "kubernetes_service" "api_service" {
     type = "LoadBalancer"
   }
 }
+
 
 # FSO-Client
 
@@ -137,7 +151,7 @@ resource "kubernetes_deployment" "fso_client" {
 
           env {
             name  = "MembersEndpointUrl"
-            value = "http://${kubernetes_service.api_service.status.0.load_balancer.0.ingress.0.ip}:5046/api/members"
+            value = "http://${kubernetes_service.api_service.status[0].load_balancer[0].ingress[0].hostname}:5046/api/members"
           }
               
         }
@@ -163,27 +177,14 @@ resource "kubernetes_service" "fso_client_service" {
   }
 }
 
-output "lb_ip" {
-  value = kubernetes_service.fso_client_service.status.0.load_balancer.0.ingress.0.ip
+output "cluster_name" {
+  value = data.aws_eks_cluster.cluster.name
 }
 
-
-
-#resource "kubernetes_env" "apiendpoint" {
-#  container = "fso-client"
-#  metadata {
-#    name  = "fso-api-deployment"
-#  }
-#
-#  api_version = "app/v1"
-#  kind        = "Deployment"
-#
-#  env {
-#    name  = "ApiEndpointUrl"
-#    value = "${kubernetes_service.api_service.status.0.load_balancer.0.ingress.0.ip}"
-#  }
-#}
+output "cluster_endpoint" {
+  value = data.aws_eks_cluster.cluster.endpoint
+}
 
 output "api_ip" {
-  value = kubernetes_service.api_service.status.0.load_balancer.0.ingress.0.ip
+ value = kubernetes_service.api_service.status[0].load_balancer[0].ingress[0].hostname
 }
