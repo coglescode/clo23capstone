@@ -18,8 +18,6 @@ public class MembersApiService
 
 
 
-
-
     public MembersApiService(HttpClient httpClient, IConfiguration configuration)
     {
 
@@ -59,10 +57,19 @@ public class MembersApiService
         //}
     }
 
+    [HttpGet("{id}")]
+    public async Task<bool> GetMemberAsync(string id)
+    {
+        var response = await _httpClient.GetAsync($"{_apiMembersEndpoint}/{id}");
+        response.EnsureSuccessStatusCode();
+
+        return true;
+    }
 
 
-    [HttpDelete]
-    public async Task<bool> DeleteMembersAsync(Guid id)
+
+    [HttpDelete("{id}")]
+    public async Task<bool> DeleteMembersAsync(string id)
     {
 
         var response = await _httpClient.DeleteAsync($"{_apiMembersEndpoint}/{id}");
@@ -75,11 +82,25 @@ public class MembersApiService
     }
 
     [HttpPost("{name}")]
-    public async Task<bool> PostMembersAsync(MembersApiDTO memberDTO)
+    public async Task<bool> PostMembersAsync(MembersApiDTO memberApiDTO)
     {
         //content = httpClient;
 
-        var response = await _httpClient.PostAsJsonAsync(_apiMembersEndpoint, memberDTO);           
+        var response = await _httpClient.PostAsJsonAsync(_apiMembersEndpoint, memberApiDTO);           
+
+        //var content = await response.Content.ReadAsStringAsync();
+        //response.EnsureSuccessStatusCode();
+
+        //return JsonSerializer.Deserialize<List<MembersApiDTO>>(content);
+        return true;
+    }
+
+    [HttpPut("{id}")]
+    public async Task<bool> PutMembersAsync(string id, MembersApiDTO memberApiDTO)
+    {
+        //content = httpClient;
+
+        var response = await _httpClient.PutAsJsonAsync(_apiMembersEndpoint, memberApiDTO.Id);           
 
         //var content = await response.Content.ReadAsStringAsync();
         //response.EnsureSuccessStatusCode();

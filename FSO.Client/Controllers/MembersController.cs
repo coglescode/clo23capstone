@@ -24,7 +24,8 @@ public class MembersController : Controller
             var members = membersFromApiService.Select(member => new MemberViewModel
             {
                 Id = member.Id,
-                Name = member.Name
+                Name = member.Name,
+                Lastname = member.Lastname
             }).ToList();
 
 
@@ -49,9 +50,14 @@ public class MembersController : Controller
                 
     }
 
-    public async Task<IActionResult> DeleteMember(Guid id)
+    public async Task<IActionResult> DeleteMember(MemberViewModel member)
     {
-        var memberId = await _membersApiService.DeleteMembersAsync(id);
+        //var memberId = new MembersApiDTO
+        //{
+        //    Id = memberView.Id
+        //};
+
+        var _memberId = await _membersApiService.DeleteMembersAsync(member.Id);
         return RedirectToAction("Index", "Members");
   
     }
@@ -61,37 +67,36 @@ public class MembersController : Controller
         var member = new MembersApiDTO
         {
             //Id = memberView.Id,
-            Name = memberView.Name
+            Name = memberView.Name,
+            Lastname = memberView.Lastname
         };
 
         var memberName = await _membersApiService.PostMembersAsync(member);
         return RedirectToAction("Index", "Members");
-
     }
 
-    // Mocked API data. Private method to simulate API call
-    //private List<MemberViewModel> GetMembers()
-    //{
-    //    return new List<MemberViewModel>
-    //    {
-    //        new MemberViewModel
-    //        {
-    //            Id = 1,
-    //            Name = "Product 1",
-               
-    //        },
-    //        new MemberViewModel
-    //        {
-    //            Id = 2,
-    //            Name = "Product 2",
-               
-    //        },
-    //        new MemberViewModel
-    //        {
-    //            Id = 3,
-    //            Name = "Product 3",
-                
-    //        }
-    //    };
-    //}
+    public async Task<IActionResult> EditMember(string id, MemberViewModel memberView)
+    {
+        var memberId = await _membersApiService.GetMemberAsync(id);
+
+        var member = new MembersApiDTO
+        {
+            //Id = memberView.Id,
+            Name = memberView.Name,
+            Lastname = memberView.Lastname
+        };
+
+
+        //if (member is )
+        //{
+        //    return NotFound();
+        //}
+
+        //memberView.Id = member.Id;
+
+        var memberName = await _membersApiService.PutMembersAsync(id, member);
+        return RedirectToAction("Index", "Members");
+    }
+
+
 }

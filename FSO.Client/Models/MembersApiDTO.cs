@@ -18,10 +18,12 @@ Make sure the property decorators match the schema
 public class MembersApiDTO
 {
     [JsonPropertyName("id")]
-    public Guid Id { get; set; }
+    public string? Id { get; set; }
 
     [JsonPropertyName("name")]
-    public string Name { get; set; }
-
+    public string? Name { get; set; } 
+    
+    [JsonPropertyName("lastname")]
+    public string? Lastname { get; set; }
 
 }
