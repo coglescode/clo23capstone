@@ -22,12 +22,11 @@ namespace FSO.API.Controllers
             _context = context; 
         }
 
-        // GET: api/Members
-        
 
+        // GET: api/Members
         [HttpGet]
-        public async Task<List<Member>> GetMembers()
-        //public async Task<ActionResult<List<Member>>> GetMembers()
+        //public async Task<List<Member>> GetMembers()
+        public async Task<ActionResult<List<Member>>> GetMembers()
         
         {
             var members = await _context.Members.ToListAsync();
@@ -36,26 +35,34 @@ namespace FSO.API.Controllers
         }
 
 
-
-
         // GET: api/Members/5
         [HttpGet]
-        [Route("{id:guid}")]
-        public IActionResult GetMembers(MembersDTO membersDTO)
+        [Route("{id}")]
+        public async Task<ActionResult<Member>> GetMember(string id)
         {
-            var member = new Member
+            var member = await _context.Members.FindAsync(id);
+            if (member == null)
             {
-               Name = membersDTO.Name
-            };
-
-            _context.Members.Add(member);
-            _context.SaveChanges();
-
-            return Ok(member);
+                return NotFound();
+            }
+            return member;
         }
-        //public async Task<ActionResult<Member>> GetMember(int id)
+        //public IActionResult GetMembers(MembersDTO membersDTO)
         //{
-        //    var member = await _context.Members.FindAsync(id);
+        //    var member = new Member
+        //    {
+        //       Name = membersDTO.Name,
+        //       Lastname = membersDTO.Lastname
+        //    };
+
+        //    _context.Members.Add(member);
+        //    _context.SaveChanges();
+
+        //    return Ok(member);
+        //}
+        //public async Task<ActionResult<Member>> GetMember(string name)
+        //{
+        //    var member = await _context.Members.FirstOrDefaultAsync(member => member.Name == name);
         //    if (member == null)
         //    {
         //        return NotFound();
@@ -66,15 +73,21 @@ namespace FSO.API.Controllers
         // PUT: api/Members/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut]
-        [Route("{id:guid}")]
-        public async Task<IActionResult> PutMember(Guid id, Member member)
+        [Route("{id}")]
+        public async Task<IActionResult> PutMember(string? id, Member member)
         {
             if (id != member.Id)
             {
                 return BadRequest();
             }
+            var memberIs = new Member
+            {
+                //Id  = member.Id,
+                Name = member.Name,
+                Lastname = member.Lastname
+            };
 
-            _context.Entry(member).State = EntityState.Modified;
+            _context.Entry(memberIs).State = EntityState.Modified;
 
             try
             {
@@ -82,8 +95,8 @@ namespace FSO.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MemberExists(id))
-                {
+                if (!MemberExists(member.Id))
+                { 
                     return NotFound();
                 }
                 else
@@ -122,8 +135,8 @@ namespace FSO.API.Controllers
 
         // DELETE: api/Members/5
         [HttpDelete]
-        [Route("{id:guid}")]
-        public async Task<IActionResult> DeleteMember(Guid id)
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteMember(string id)
         {
             var member = await _context.Members.FindAsync(id);
             if (member == null)
@@ -138,7 +151,7 @@ namespace FSO.API.Controllers
             //return RedirectToAction("GetMembers");
         }
 
-        private bool MemberExists(Guid id)
+        private bool MemberExists(string id)
         {
             return _context.Members.Any(e => e.Id == id);
         }
