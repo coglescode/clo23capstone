@@ -76,10 +76,7 @@ resource "kubernetes_deployment" "fso-api" {
             container_port = 8080
           }  
 
-          env {
-            name  = "CONNECTION_STRING"
-            value = "Data Source=188.149.80.66,1433;Initial Catalog=fso_members;Persist Security Info=True;User ID=sa;Password=Noobsaibot.502;Encrypt=True;Trust Server Certificate=True"
-          }
+         
         }
       }
     }
