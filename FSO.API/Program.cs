@@ -7,8 +7,8 @@ using FSO.API.Models;
 using Microsoft.Extensions.Options;
 using System;
 using FSO.API.Controllers;
-using Microsoft.IdentityModel.Tokens;
-using System.Diagnostics;
+using FSO.API.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -23,8 +23,8 @@ var configuration = builder.Configuration;
 //builder.Services.AddAwsSecretsManager(builder.Configuration);
 
 
-string? connectionstring = builder.Configuration.GetConnectionString("CONNECTION_STRING");
-
+//string? connectionstring = builder.Configuration.GetConnectionString("CONNECTION_STRING");
+string? connectionstring = QuickstartSample.Quickstart();
 
 builder.Services.AddControllers();
 

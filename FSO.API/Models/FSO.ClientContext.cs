@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 using Microsoft.AspNetCore.DataProtection;
 using System.Net.Sockets;
+using FSO.API.Services;
 
 namespace FSO.API.Models;
 
@@ -23,10 +24,10 @@ public class ClientDbContext : DbContext
     public ClientDbContext(DbContextOptions<ClientDbContext> options, IConfiguration configuration) : base(options)
     {
         _configuration = configuration;
-      
-        //_connectionString = _configuration.GetValue<string>("ConnectionString");      // For local User Secrets
-        _connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");    // For Enviroment Variables
 
+        //_connectionString = _configuration.GetValue<string>("ConnectionString");      // For local User Secrets
+        //_connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");    // For Enviroment Variables
+        _connectionString = QuickstartSample.Quickstart();
 
     }
 
