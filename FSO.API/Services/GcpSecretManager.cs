@@ -16,7 +16,7 @@ public class QuickstartSample
 
     public static string Quickstart()
     {
-        string? projectId = "server01-413108";
+        string? projectId = "YOUR-PROJECT_ID-GOES-HERE";
         string secretId = "CONNECTION_STRING";
         string secretVersionId = "latest";
 

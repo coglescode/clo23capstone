@@ -26,8 +26,11 @@ public class ClientDbContext : DbContext
         _configuration = configuration;
 
         //_connectionString = _configuration.GetValue<string>("ConnectionString");      // For local User Secrets
-        //_connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");    // For Enviroment Variables
-        _connectionString = QuickstartSample.Quickstart();
+        _connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");    // For Enviroment Variables
+
+        // The line below gets the ConnectionString from the GcpSecretManager service in Services directory
+        // Comment out the line below if you are going to use Google Secret Manager
+        //_connectionString = QuickstartSample.Quickstart();
 
     }
 

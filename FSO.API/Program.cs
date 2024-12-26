@@ -23,13 +23,13 @@ var configuration = builder.Configuration;
 //builder.Services.AddAwsSecretsManager(builder.Configuration);
 
 
-//string? connectionstring = builder.Configuration.GetConnectionString("CONNECTION_STRING");
-string? connectionstring = QuickstartSample.Quickstart();
+//string? connectionString = builder.Configuration.GetConnectionString("CONNECTION_STRING");
+string? connectionString = QuickstartSample.Quickstart();
 
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<ClientDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString(connectionstring)));
+    options.UseSqlServer(builder.Configuration.GetConnectionString(connectionString)));
 
 builder.Configuration.AddEnvironmentVariables();
 
