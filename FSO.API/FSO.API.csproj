@@ -39,6 +39,10 @@
     <!--ContainerEnvironmentVariable Include="ConnectionString" Value="$(ConnectionString)" /-->
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
  
 
 </Project>
