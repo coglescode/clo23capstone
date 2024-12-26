@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 using Microsoft.AspNetCore.DataProtection;
 using System.Net.Sockets;
-using FSO.API.Services;
+//using FSO.API.Services;
 
 namespace FSO.API.Models;
 
@@ -33,7 +33,7 @@ public class ClientDbContext : DbContext
         //_connectionString = QuickstartSample.Quickstart();
 
     }
-
+    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder
