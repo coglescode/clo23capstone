@@ -29,7 +29,7 @@ public class ClientDbContext : DbContext
         _connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");    // For Enviroment Variables
 
         // The line below gets the ConnectionString from the GcpSecretManager service in Services directory
-        // Comment out the line below if you are going to use Google Secret Manager
+        // Comment in the line below if you are going to use Google Secret Manager
         //_connectionString = QuickstartSample.Quickstart();
 
     }

@@ -7,13 +7,12 @@ using FSO.API.Models;
 using Microsoft.Extensions.Options;
 using System;
 using FSO.API.Controllers;
-using FSO.API.Services;
+//using FSO.API.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var configuration = builder.Configuration;
-
 
 
 // Add services to the container.
@@ -23,11 +22,12 @@ var configuration = builder.Configuration;
 //builder.Services.AddAwsSecretsManager(builder.Configuration);
 
 
-//string? connectionString = builder.Configuration.GetConnectionString("CONNECTION_STRING");
-string? connectionString = QuickstartSample.Quickstart();
+string? connectionString = builder.Configuration.GetConnectionString("CONNECTION_STRING");
+
+// Comment in the following line to use the QuickstartSample.Quickstart() method for GCP Secret Manager
+//string? connectionString = QuickstartSample.Quickstart();
 
 builder.Services.AddControllers();
-
 builder.Services.AddDbContext<ClientDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString(connectionString)));
 
